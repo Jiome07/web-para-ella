@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>🌙</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  overflow:hidden;
+  font-family: Arial, sans-serif;
+  color:white;
+  background: linear-gradient(to top, #02040f, #0b1a3a);
+  animation: night 8s ease forwards;
+}
+
+/* 🌙 ANOCHECER */
+@keyframes night{
+  0%{background:#87b7ff;}
+  40%{background:#3a5ea8;}
+  70%{background:#0b1a3a;}
+  100%{background:#02040f;}
+}
+
+/* 🌌 ESTRELLAS */
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  opacity:0;
+  animation: appearStar 6s forwards;
+}
+
+@keyframes appearStar{
+  from{opacity:0;}
+  to{opacity:0.7;}
+}
+
+/* 🌠 FUGACES */
+.shooting{
+  position:absolute;
+  width:120px;
+  height:2px;
+  background:linear-gradient(90deg,white,transparent);
+  opacity:0;
+  animation: shoot 6s infinite;
+}
+
+@keyframes shoot{
+  0%{opacity:0; transform:translate(0,0) rotate(-20deg);}
+  10%{opacity:1;}
+  100%{opacity:0; transform:translate(300px,200px) rotate(-20deg);}
+}
+
+/* 🌙 LUNA (aparece poco a poco) */
+#moon{
+  position:absolute;
+  top:35px;
+  right:50px;
+  font-size:80px;
+  opacity:0;
+  cursor:pointer;
+  filter: drop-shadow(0 0 25px white);
+  animation: glow 2.5s ease-in-out infinite, floatMoon 4s ease-in-out infinite;
+  transition: opacity 2s ease;
+}
+
+@keyframes glow{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.15);}
+}
+
+@keyframes floatMoon{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+
+/* 💬 TEXTO */
+.center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:80%;
+  text-align:center;
+}
+
+#text{
+  font-size:22px;
+  opacity:0;
+  transition: opacity 1.2s ease;
+  text-shadow:0 0 12px #5aa7ff;
+  line-height:1.7;
+}
+
+/* 🐧 DIBUJO */
+#drawing{
+  display:none;
+  text-align:center;
+  margin-top:15%;
+}
+
+img{
+  width:220px;
+  filter: drop-shadow(0 0 15px #5aa7ff);
+}
+</style>
+</head>
+
+<body>
+
+<div id="moon">🌙</div>
+
+<div class="center">
+
+  <div id="intro">
+    <h2>Quise hacerte un detalle tonto…</h2>
+    <p>No sé dibujar</p>
+    <p>pero decidí dibujarte con mis palabras</p>
+  </div>
+
+  <div id="text"></div>
+
+</div>
+
+
+<div id="drawing">
+    <p style="text-align:center; font-size:18px; text-shadow:0 0 10px #5aa7ff;">
+    Y aun así… te dejé un último detallito. Me dijiste que te gusta Piplup, así que te hice esto es una chorrada
+    </p>
+  <img src="piplup.png">
+</div>
+
+<script>
+
+/* 🌙 POEMA MÁS HUMANO (no lista, sino pensamiento continuo) */
+const frases = [
+`Quise hacerte un detalle tonto…`,
+
+`No sé dibujar muy bien`,
+
+`asi que decidí dibujarte con mis palabras`,
+
+`No sé muy bien cómo decir esto…`,
+
+`pero contigo me pasa algo que no me pasa con nadie más.`,
+
+`hay momentos en los que me quedo pensando en lo fácil que es hablar contigo.`,
+
+`y en cómo, sin darte cuenta, haces que todo se sienta más tranquilo.`,
+
+`me gusta cómo me haces sentir…`,
+
+`como si tuviera un sitio donde estar bien sin pensarlo mucho.`,
+
+`y no sé explicarlo mejor que eso.`,
+
+`luego pienso en ti…`,
+
+`en tu sonrisa primero.`,
+
+`y después en tus ojos.`,
+
+`y en cómo algo tan simple puede quedarse tanto en mi cabeza.`,
+
+`no sé si tiene sentido todo esto…`,
+
+`pero contigo todo parece tener un poco más de sentido del que debería.`,
+
+`Esto es lo más cercano a un dibujo que puedo hacerte.`,
+
+`Aunque me di cuenta que es imposible terminar un dibujo con palabras… `,
+
+`porque me faltan palabras para poder terminarlo`
+
+];
+
+let i = 0;
+
+const text = document.getElementById("text");
+const intro = document.getElementById("intro");
+const moon = document.getElementById("moon");
+const drawing = document.getElementById("drawing");
+
+/* 🌙 INTRO → POEMA */
+function show(){
+
+  if(i === 0){
+    intro.style.opacity = 0;
+    setTimeout(()=> intro.style.display="none",1500);
+  }
+
+  if(i < frases.length){
+
+    text.style.opacity = 0;
+
+    setTimeout(()=>{
+      text.innerText = frases[i];
+      text.style.opacity = 1;
+      i++;
+    },1400);
+
+  } else {
+
+    text.style.opacity = 0;
+
+    setTimeout(()=>{
+      text.style.display="none";
+      moon.style.opacity = 1;   // 🌙 aparece como final del poema
+    },1500);
+  }
+}
+
+/* ⏱️ RITMO MÁS NATURAL */
+setInterval(show, 5200);
+show();
+
+/* 🌙 CLICK LUNA */
+moon.addEventListener("click", ()=>{
+  document.querySelector(".center").style.display="none";
+  moon.style.display="none";
+  drawing.style.display="block";
+});
+
+/* 🌌 ESTRELLAS QUE VAN APARECIENDO (anochecer real) */
+for(let i=0;i<100;i++){
+  let s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  s.style.animationDelay=Math.random()*8+"s";
+  document.body.appendChild(s);
+}
+
+/* 🌠 FUGACES */
+for(let i=0;i<4;i++){
+  let f=document.createElement("div");
+  f.className="shooting";
+  f.style.top=Math.random()*60+"vh";
+  f.style.left=Math.random()*100+"vw";
+  f.style.animationDelay=Math.random()*6+"s";
+  document.body.appendChild(f);6
+}
+
+/* 🌙 aparición progresiva (anochecer) */
+setTimeout(()=>{
+  moon.style.opacity = 1;
+}, 6000);
+
+</script>
+
+</body>
+</html>
